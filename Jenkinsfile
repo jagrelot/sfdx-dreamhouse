@@ -14,7 +14,6 @@ node {
     def toolbelt = tool 'toolbelt'
 
     stage('checkout source') {
-        // when running in multi-branch job, one must issue this command
         checkout scm
     }
 
@@ -26,7 +25,6 @@ node {
 
             // need to pull out assigned username
             rmsg = sh returnStdout: true, script: "${toolbelt}/sfdx force:org:create --definitionfile config/project-scratch-def.json --json --setdefaultusername"
-            echo rmsg
             printf rmsg
             def jsonSlurper = new JsonSlurperClassic()
             def robj = jsonSlurper.parseText(rmsg)

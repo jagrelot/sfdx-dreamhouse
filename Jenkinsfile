@@ -14,7 +14,11 @@ node {
     def toolbelt = tool 'toolbelt'
 
     stage('checkout source') {
-        // when running in multi-branch job, one must issue this command
         checkout scm
+    }
+    
+    withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
+    
+    
     }
 }

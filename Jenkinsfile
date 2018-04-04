@@ -1,6 +1,7 @@
 #!groovy
 import groovy.json.JsonSlurperClassic
 node {
+
     def BUILD_NUMBER=env.BUILD_NUMBER
     def RUN_ARTIFACT_DIR="tests/${BUILD_NUMBER}"
     def SFDC_USERNAME
@@ -11,11 +12,11 @@ node {
     def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
 
     def toolbelt = tool 'toolbelt'
-    
+
     stage('checkout source') {
         checkout scm
     }
-    
+
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
         stage('Create Scratch Org') {
 
@@ -31,6 +32,32 @@ node {
             SFDC_USERNAME=robj.username
             robj = null
 
+        }
+
+        stage('Push To Test Org') {
+            rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:source:push --targetusername ${SFDC_USERNAME}"
+            if (rc != 0) {
+                error 'push failed'
+            }
+            // assign permset
+            rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:user:permset:assign --targetusername ${SFDC_USERNAME} --permsetname DreamHouse"
+            if (rc != 0) {
+                error 'permset:assign failed'
+            }
+        }
+
+        stage('Run Apex Test') {
+            sh "mkdir -p ${RUN_ARTIFACT_DIR}"
+            timeout(time: 120, unit: 'SECONDS') {
+                rc = sh returnStatus: true, script: "${toolbelt}/sfdx force:apex:test:run --testlevel RunLocalTests --outputdir ${RUN_ARTIFACT_DIR} --resultformat tap --targetusername ${SFDC_USERNAME}"
+                if (rc != 0) {
+                    error 'apex test run failed'
+                }
+            }
+        }
+
+        stage('collect results') {
+            junit keepLongStdio: true, testResults: 'tests/**/*-junit.xml'
         }
     }
 }

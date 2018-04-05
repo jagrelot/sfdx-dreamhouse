@@ -29,7 +29,7 @@ node {
             printf rmsg
             def jsonSlurper = new JsonSlurperClassic()
             def robj = jsonSlurper.parseText(rmsg)
-            echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj
+            echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.result
             echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.status
             echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.username
             echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.orgId

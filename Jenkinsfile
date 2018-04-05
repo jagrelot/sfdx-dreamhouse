@@ -32,6 +32,7 @@ node {
             echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj
             if (robj.status != 0) { error 'org creation failed: ' + robj.message }
             SFDC_USERNAME=robj.username
+            echo '******USERNAME******* '+ SFDC_USERNAME
             robj = null
 
         }

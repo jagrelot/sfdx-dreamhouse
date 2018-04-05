@@ -26,6 +26,7 @@ node {
             // need to pull out assigned username
             rmsg = sh returnStdout: true, script: "${toolbelt}/sfdx force:org:create --definitionfile config/project-scratch-def.json --json --setdefaultusername"
             echo '******JSON OUPUT******* '+ rmsg
+            echo '******JSON OUPUT******* '+ rmsg.username
             printf rmsg
             def jsonSlurper = new JsonSlurperClassic()
             def robj = jsonSlurper.parseText(rmsg)

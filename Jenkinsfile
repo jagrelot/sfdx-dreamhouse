@@ -29,12 +29,9 @@ node {
             printf rmsg
             def jsonSlurper = new JsonSlurperClassic()
             def robj = jsonSlurper.parseText(rmsg)
-            echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.result
-            echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.status
             echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.result.username
-            echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj.orgId
-            if (robj.status != 0) { error 'org creation failed: ' + robj.message }
-            SFDC_USERNAME=robj.username
+            if (robj.status != 0) { error 'org creation failed: ' + robj.result.message }
+            SFDC_USERNAME=robj.result.username
             echo '******USERNAME******* '+ SFDC_USERNAME
             robj = null
 

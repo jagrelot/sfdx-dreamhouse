@@ -30,7 +30,7 @@ node {
             def jsonSlurper = new JsonSlurperClassic()
             def robj = jsonSlurper.parseText(rmsg)
             echo '******JSONSLUPERCLASSIC OUPUT******* '+ robj
-            if (robj.status != "ok") { error 'org creation failed: ' + robj.message }
+            if (robj.status != 0) { error 'org creation failed: ' + robj.message }
             SFDC_USERNAME=robj.username
             robj = null
 

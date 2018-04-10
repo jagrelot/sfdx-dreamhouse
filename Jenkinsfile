@@ -80,5 +80,9 @@ node {
                      error 'Update failed'
                  }	
         }
+
+        stage('Display Org'){
+            sh returnStdout: true, script: "${toolbelt}/sfdx force:org:display -u ${SFDC_USERNAME} --json"
+        }
     }
 }

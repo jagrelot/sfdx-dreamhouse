@@ -83,6 +83,7 @@ node {
 
         stage('Display Org'){
             rc = sh returnStdout: true, script: "${toolbelt}/sfdx force:org:display -u ${SFDC_USERNAME} --json"
+            echo "----------- " + rc
         }
     }
 }

@@ -1,4 +1,5 @@
 BASE_USER_PERMISSION="Privacy_Base"
+SFDX_PATH="/usr/local/bin/" 
 
 function checkout_git_branch() {
     # git checkout origin/privacy
@@ -30,7 +31,7 @@ function create_scratch_org_with_definition_file_and_story_name() {
     local story_number=$2
     echo creating scratch org...
     echo
-    sfdx force:org:create -f $org_definition_file -a $story_number -s -d 16
+    $SFDX_PATH/sfdx force:org:create -f $org_definition_file -a $story_number -s -d 16
     if [ $? -eq 0 ]; then
         echo created scratch org
         echo
@@ -54,9 +55,9 @@ function push_source_to_scratch_org() {
     echo
     if [ -z "$org_alias" ]
     then
-        sfdx force:source:push
+        $SFDX_PATH/sfdx force:source:push
     else
-        sfdx force:source:push -u $org_alias
+        $SFDX_PATH/sfdx force:source:push -u $org_alias
     fi
     echo
     echo pushed source
@@ -79,7 +80,7 @@ function create_user_from_definition_file() {
     local definition_file=$1
     local story_number=$2
 
-    sfdx force:user:create -f $definition_file
+    $SFDX_PATH/sfdx force:user:create -f $definition_file
     echo
 
 }
@@ -115,7 +116,7 @@ function import_data_from_data_plan_file() {
     local data_plan_file=$1
     echo importing data...
     echo
-    sfdx force:data:tree:import -p $data_plan_file
+    $SFDX_PATH/sfdx force:data:tree:import -p $data_plan_file
     echo
 }
 
@@ -125,10 +126,8 @@ function open_scratch_org() {
     local org_alias="$1"
     if [ -z "$org_alias" ]
     then
-        sfdx force:org:open
+        $SFDX_PATH/sfdx force:org:open
     else
-        sfdx force:org:open -u $org_alias
+        $SFDX_PATH/sfdx force:org:open -u $org_alias
     fi
 }
-
-

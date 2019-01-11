@@ -7,6 +7,7 @@ function checkout_git_branch() {
     echo checking out git branch $branch_to_checkout...
     echo
     git checkout $branch_to_checkout
+    git pull
     echo
     echo checked out branch
     echo
@@ -22,7 +23,7 @@ function create_git_branch() {
     echo
     echo created branch
     echo
-    git push $branch_to_branch_from
+    git push --set-upstream origin $branch_to_branch_from
 }
 
 function create_scratch_org_with_definition_file_and_story_name() {

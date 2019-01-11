@@ -22,6 +22,7 @@ function create_git_branch() {
     echo
     echo created branch
     echo
+    git push $branch_to_branch_from
 }
 
 function create_scratch_org_with_definition_file_and_story_name() {
